@@ -67,7 +67,7 @@ function AuthForm() {
       ? await supabase.auth.signInWithPassword({ email, password })
       : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/admin` } });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     if (mode === "up" && !data.session) toast.success("Vérifiez votre e-mail pour confirmer le compte.");
   };
   return (
@@ -93,7 +93,7 @@ function Dashboard({ email }: { email: string }) {
 
   const setStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("listings").update({ status }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     refresh();
   };
   const remove = async (id: string) => {
@@ -178,7 +178,7 @@ function ListingForm({ initial, onDone }: { initial: Listing | null; onDone: () 
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!f.title.trim()) return toast.error("Titre requis");
+    if (!f.title.trim()) return void toast.error("Titre requis");
     const row = {
       category: f.category, subcategory: f.subcategory || null, title: f.title.trim().slice(0, 200), description: f.description || null,
       price: f.price ? Number(f.price) : null, price_unit: f.price_unit || null, currency: f.currency || "USD", condition: f.condition || null,
@@ -188,7 +188,7 @@ function ListingForm({ initial, onDone }: { initial: Listing | null; onDone: () 
     setBusy(true);
     const { error } = initial ? await supabase.from("listings").update(row).eq("id", initial.id) : await supabase.from("listings").insert(row);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     toast.success(initial ? "Annonce mise à jour" : "Annonce publiée");
     onDone();
   };
@@ -241,9 +241,9 @@ function Settings() {
   useEffect(() => { if (data) setWa(data.whatsapp); }, [data]);
   const save = async () => {
     const clean = wa.replace(/\D/g, "");
-    if (clean.length < 8) return toast.error("Numéro invalide (format international, ex. 243812345678)");
+    if (clean.length < 8) return void toast.error("Numéro invalide (format international, ex. 243812345678)");
     const { error } = await supabase.from("settings").update({ whatsapp: clean }).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["settings"] });
     toast.success("Numéro WhatsApp enregistré");
   };

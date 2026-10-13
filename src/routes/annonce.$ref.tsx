@@ -59,11 +59,11 @@ function Detail() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const p = formSchema.safeParse(form);
-    if (!p.success) return toast.error(p.error.issues[0].message);
+    if (!p.success) return void toast.error(p.error.issues[0]?.message ?? "Formulaire invalide");
     setSending(true);
     const { error } = await supabase.from("requests").insert({ listing_id: l.id, reference: l.reference, name: p.data.name, phone: p.data.phone, message: p.data.message || null });
     setSending(false);
-    if (error) return toast.error("Envoi impossible, réessayez.");
+    if (error) return void toast.error("Envoi impossible, réessayez.");
     toast.success("Demande envoyée ! SewaPoint vous recontacte rapidement.");
     setForm({ name: "", phone: "", message: "" });
   };

@@ -52,7 +52,24 @@ export const settingsQuery = () =>
     },
   });
 
-export function whatsappLink(phone: string, l: Pick<Listing, "reference" | "title" | "price" | "currency" | "price_unit">, action: string) {
-  const msg = `Bonjour SewaPoint 👋\nJe souhaite : ${action}\n\nRéférence : ${l.reference}\nArticle : ${l.title}\nPrix : ${formatPrice(l)}\n\nMerci de me recontacter.`;
+export function whatsappLink(phone: string, l: Pick<Listing, "reference" | "title" | "price" | "currency" | "price_unit">, action: string, dates?: string) {
+  const msg = `Bonjour SewaPoint 👋\nJe souhaite : ${action}\n\nRéférence : ${l.reference}\nArticle : ${l.title}\nPrix : ${formatPrice(l)}${dates ? `\nDates : ${dates}` : ""}\n\nMerci de me recontacter.`;
   return `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(msg)}`;
 }
+
+export const BOOKABLE = ["immobilier", "hebergement", "evenements", "etudiants"];
+export const ORDER_STATUSES = ["Nouveau", "En cours", "Confirmée", "Terminée", "Annulée"] as const;
+
+export type Range = { start: string; end: string };
+/** True when [start,end] (ISO yyyy-mm-dd, inclusive) overlaps none of the occupied ranges. */
+export const isRangeFree = (r: Range, occupied: Range[]) => occupied.every((o) => o.end < r.start || o.start > r.end);
+
+export const reservationsQuery = (listingId: string) =>
+  queryOptions({
+    queryKey: ["reservations", listingId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("reservations").select("*").eq("listing_id", listingId).order("start_date");
+      if (error) throw error;
+      return data;
+    },
+  });

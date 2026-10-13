@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatusBadge } from "@/components/site";
-import { CATEGORIES, CONDITIONS, STATUSES, formatPrice, listingsQuery, settingsQuery, type Listing } from "@/lib/catalog";
+import { CATEGORIES, CONDITIONS, STATUSES, formatPrice, listingsQuery, settingsQuery, ORDER_STATUSES, BOOKABLE, type Listing } from "@/lib/catalog";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -112,7 +112,9 @@ function Dashboard({ email }: { email: string }) {
         <TabsList>
           <TabsTrigger value="list">Annonces ({listings.length})</TabsTrigger>
           <TabsTrigger value="form">{editing ? "Modifier" : "Nouvelle annonce"}</TabsTrigger>
+          <TabsTrigger value="orders">Commandes WhatsApp</TabsTrigger>
           <TabsTrigger value="requests">Demandes</TabsTrigger>
+          <TabsTrigger value="calendar">Calendrier</TabsTrigger>
           <TabsTrigger value="settings">Paramètres</TabsTrigger>
         </TabsList>
         <TabsContent value="list" className="mt-6 space-y-3">
@@ -135,7 +137,9 @@ function Dashboard({ email }: { email: string }) {
         <TabsContent value="form" className="mt-6">
           <ListingForm key={editing?.id ?? "new"} initial={editing} onDone={() => { refresh(); setEditing(null); setTab("list"); }} />
         </TabsContent>
+        <TabsContent value="orders" className="mt-6"><Orders /></TabsContent>
         <TabsContent value="requests" className="mt-6"><Requests /></TabsContent>
+        <TabsContent value="calendar" className="mt-6"><Reservations listings={listings.filter((l) => BOOKABLE.includes(l.category))} /></TabsContent>
         <TabsContent value="settings" className="mt-6"><Settings /></TabsContent>
       </Tabs>
     </div>
@@ -226,8 +230,15 @@ function Requests() {
       <div key={r.id} className="flex flex-wrap items-start gap-4 rounded-xl border bg-card p-4">
         <div className="flex-1"><p className="font-semibold">{r.name} · <a className="text-primary" href={`https://wa.me/${r.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">{r.phone}</a></p>
           <p className="text-sm">Réf. {r.reference && <Link to="/annonce/$ref" params={{ ref: r.reference }} className="font-mono underline">{r.reference}</Link>}</p>
+          {r.start_date && <p className="text-sm">Dates : {fmtD(r.start_date)} → {fmtD(r.end_date ?? r.start_date)}</p>}
           {r.message && <p className="mt-1 text-sm text-muted-foreground">{r.message}</p>}
           <p className="mt-1 text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString("fr-FR")}</p></div>
+        <select className="h-9 rounded-md border bg-card px-2 text-sm" value={r.status} onChange={async (e) => { await supabase.from("requests").update({ status: e.target.value }).eq("id", r.id); refetch(); }}>{ORDER_STATUSES.map((x) => <option key={x}>{x}</option>)}</select>
+        {r.start_date && r.listing_id && <Button size="sm" variant="outline" onClick={async () => {
+          const { error } = await supabase.from("reservations").insert({ listing_id: r.listing_id!, start_date: r.start_date!, end_date: r.end_date ?? r.start_date!, note: `Demande de ${r.name}` });
+          if (error) return void toast.error(error.message);
+          await supabase.from("requests").update({ status: "Confirmée" }).eq("id", r.id); refetch(); toast.success("Dates bloquées dans le calendrier");
+        }}>Bloquer les dates</Button>}
         <Button size="icon" variant="ghost" onClick={async () => { await supabase.from("requests").delete().eq("id", r.id); refetch(); }}><Trash2 /></Button>
       </div>))}
     </div>
@@ -253,6 +264,64 @@ function Settings() {
       <Input value={wa} onChange={(e) => setWa(e.target.value)} placeholder="243812345678" />
       <p className="text-xs text-muted-foreground">Format international sans « + ». Tous les boutons d'action ouvrent une conversation vers ce numéro.</p>
       <Button onClick={save}>Enregistrer</Button>
+    </div>
+  );
+}
+
+const fmtD = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR");
+
+function Orders() {
+  const { data = [], refetch } = useQuery({ queryKey: ["wa_orders"], queryFn: async () => (await supabase.from("whatsapp_orders").select("*").order("created_at", { ascending: false })).data ?? [] });
+  const [filter, setFilter] = useState("");
+  const rows = data.filter((o) => !filter || o.status === filter);
+  const update = async (id: string, status: string) => { const { error } = await supabase.from("whatsapp_orders").update({ status }).eq("id", id); if (error) toast.error(error.message); refetch(); };
+  return (
+    <div className="space-y-3">
+      <select className="h-9 rounded-md border bg-card px-2 text-sm" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="">Tous les statuts ({data.length})</option>{ORDER_STATUSES.map((x) => <option key={x}>{x}</option>)}</select>
+      {!rows.length && <p className="text-muted-foreground">Aucune commande WhatsApp enregistrée.</p>}
+      {rows.map((o) => (
+        <div key={o.id} className="flex flex-wrap items-center gap-4 rounded-xl border bg-card p-4">
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold"><Link to="/annonce/$ref" params={{ ref: o.reference }} className="font-mono underline">{o.reference}</Link> · {o.title}</p>
+            <p className="text-sm text-muted-foreground">{o.action} · {new Date(o.created_at).toLocaleString("fr-FR")}{o.start_date && ` · ${fmtD(o.start_date)} → ${fmtD(o.end_date ?? o.start_date)}`}</p>
+          </div>
+          <select className="h-9 rounded-md border bg-card px-2 text-sm" value={o.status} onChange={(e) => update(o.id, e.target.value)}>{ORDER_STATUSES.map((x) => <option key={x}>{x}</option>)}</select>
+          <Button size="icon" variant="ghost" onClick={async () => { if (!confirm("Supprimer ?")) return; await supabase.from("whatsapp_orders").delete().eq("id", o.id); refetch(); }}><Trash2 /></Button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Reservations({ listings }: { listings: Listing[] }) {
+  const qc = useQueryClient();
+  const [lid, setLid] = useState(listings[0]?.id ?? "");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const { data = [], refetch } = useQuery({ queryKey: ["reservations", lid], enabled: !!lid, queryFn: async () => (await supabase.from("reservations").select("*").eq("listing_id", lid).order("start_date")).data ?? [] });
+  const done = () => { refetch(); qc.invalidateQueries({ queryKey: ["reservations", lid] }); };
+  const add = async () => {
+    if (!start) return void toast.error("Date de début requise");
+    const { error } = await supabase.from("reservations").insert({ listing_id: lid, start_date: start, end_date: end || start });
+    if (error) return void toast.error(error.message);
+    setStart(""); setEnd(""); done();
+  };
+  return (
+    <div className="max-w-2xl space-y-4 rounded-2xl border bg-card p-6">
+      <Label>Annonce</Label>
+      <select className={sel} value={lid} onChange={(e) => setLid(e.target.value)}>{listings.map((l) => <option key={l.id} value={l.id}>{l.reference} — {l.title}</option>)}</select>
+      <div className="flex flex-wrap items-end gap-2">
+        <div><Label>Du</Label><Input type="date" value={start} onChange={(e) => setStart(e.target.value)} /></div>
+        <div><Label>Au</Label><Input type="date" value={end} onChange={(e) => setEnd(e.target.value)} /></div>
+        <Button onClick={add}>Marquer occupé</Button>
+      </div>
+      {data.map((r) => (
+        <div key={r.id} className="flex items-center justify-between rounded-lg border p-2 text-sm">
+          <span>{fmtD(r.start_date)} → {fmtD(r.end_date)}{r.note && ` · ${r.note}`}</span>
+          <Button size="icon" variant="ghost" onClick={async () => { await supabase.from("reservations").delete().eq("id", r.id); done(); }}><Trash2 /></Button>
+        </div>
+      ))}
+      {lid && !data.length && <p className="text-sm text-muted-foreground">Aucune date occupée.</p>}
     </div>
   );
 }

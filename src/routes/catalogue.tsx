@@ -7,7 +7,7 @@ import { ListingCard } from "@/components/site";
 import { CATEGORIES, CONDITIONS, STATUSES, categoryOf, listingsQuery } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
-const search = z.object({ cat: z.string().optional(), sub: z.string().optional(), cond: z.string().optional(), status: z.string().optional() });
+const search = z.object({ cat: z.string().optional(), sub: z.string().optional(), cond: z.string().optional(), status: z.string().optional(), min: z.coerce.number().optional(), max: z.coerce.number().optional() });
 
 export const Route = createFileRoute("/catalogue")({
   validateSearch: search,
@@ -28,11 +28,14 @@ const chip = (active: boolean) => cn("rounded-full border px-4 py-1.5 text-sm fo
 function Catalogue() {
   const { data } = useSuspenseQuery(listingsQuery());
   const s = Route.useSearch();
+  const navigate = Route.useNavigate();
   const [q, setQ] = useState("");
+  const upd = (k: string, v: string) => navigate({ search: (p) => ({ ...p, [k]: v === "" ? undefined : v }) as never, replace: true });
   const cat = s.cat ? categoryOf(s.cat) : undefined;
   const items = data.filter((l) =>
     (!s.cat || l.category === s.cat) && (!s.sub || l.subcategory === s.sub) && (!s.cond || l.condition === s.cond) && (!s.status || l.status === s.status) &&
-    (!q || `${l.title} ${l.reference} ${l.description ?? ""}`.toLowerCase().includes(q.toLowerCase())));
+    (s.min == null || (l.price != null && Number(l.price) >= s.min)) && (s.max == null || (l.price != null && Number(l.price) <= s.max)) &&
+    (!q || `${l.title} ${l.reference} ${l.description ?? ""} ${l.location ?? ""} ${l.subcategory ?? ""}`.toLowerCase().includes(q.toLowerCase())));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -48,12 +51,14 @@ function Catalogue() {
       )}
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Input placeholder="Rechercher un titre ou une référence…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-xs bg-card" />
-        <select className="h-9 rounded-md border bg-card px-3 text-sm" value={s.cond ?? ""} onChange={(e) => (window.location.search = new URLSearchParams({ ...clean(s), cond: e.target.value }).toString())}>
+        <select className="h-9 rounded-md border bg-card px-3 text-sm" value={s.cond ?? ""} onChange={(e) => upd("cond", e.target.value)}>
           <option value="">Neuf & Occasion</option>{CONDITIONS.map((c) => <option key={c}>{c}</option>)}
         </select>
-        <select className="h-9 rounded-md border bg-card px-3 text-sm" value={s.status ?? ""} onChange={(e) => (window.location.search = new URLSearchParams({ ...clean(s), status: e.target.value }).toString())}>
+        <select className="h-9 rounded-md border bg-card px-3 text-sm" value={s.status ?? ""} onChange={(e) => upd("status", e.target.value)}>
           <option value="">Tous les statuts</option>{STATUSES.map((c) => <option key={c}>{c}</option>)}
         </select>
+        <Input type="number" min="0" placeholder="Prix min" defaultValue={s.min ?? ""} onBlur={(e) => upd("min", e.target.value)} className="w-28 bg-card" />
+        <Input type="number" min="0" placeholder="Prix max" defaultValue={s.max ?? ""} onBlur={(e) => upd("max", e.target.value)} className="w-28 bg-card" />
         <span className="text-sm text-muted-foreground">{items.length} résultat(s)</span>
       </div>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -64,6 +69,3 @@ function Catalogue() {
   );
 }
 
-function clean(o: Record<string, string | undefined>) {
-  return Object.fromEntries(Object.entries(o).filter(([, v]) => v)) as Record<string, string>;
-}

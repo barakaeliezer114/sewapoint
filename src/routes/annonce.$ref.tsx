@@ -1,5 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import type { DateRange } from "react-day-picker";
+import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -9,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/site";
-import { categoryOf, formatPrice, listingQuery, settingsQuery, whatsappLink } from "@/lib/catalog";
+import { BOOKABLE, categoryOf, formatPrice, isRangeFree, listingQuery, reservationsQuery, settingsQuery, whatsappLink } from "@/lib/catalog";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/annonce/$ref")({
@@ -49,7 +53,31 @@ function Detail() {
   const [active, setActive] = useState(0);
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
   const [sending, setSending] = useState(false);
+  const [range, setRange] = useState<DateRange | undefined>();
+  const { data: occupied = [] } = useQuery({ ...reservationsQuery(l?.id ?? ""), enabled: !!l });
   if (!l) return null;
+  const bookable = BOOKABLE.includes(l.category);
+  const iso = (d: Date) => format(d, "yyyy-MM-dd");
+  const occ = occupied.map((o) => ({ start: o.start_date, end: o.end_date }));
+  const sel = range?.from ? { start: iso(range.from), end: iso(range.to ?? range.from) } : null;
+  const selFree = !sel || isRangeFree(sel, occ);
+  const datesLabel = sel ? `${format(range!.from!, "d MMM yyyy", { locale: fr })} → ${format(range!.to ?? range!.from!, "d MMM yyyy", { locale: fr })}` : undefined;
+  const isOccupied = (d: Date) => !isRangeFree({ start: iso(d), end: iso(d) }, occ);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const datesOk = () => {
+    if (!bookable) return true;
+    if (!sel) { toast.error("Choisissez vos dates dans le calendrier."); return false; }
+    if (!selFree) { toast.error("Ces dates sont déjà occupées."); return false; }
+    return true;
+  };
+  const orderWhatsapp = async () => {
+    if (unavailable || !datesOk()) return;
+    const w = window.open("", "_blank");
+    const { error } = await supabase.from("whatsapp_orders").insert({ listing_id: l.id, reference: l.reference, title: l.title, action, start_date: sel?.start ?? null, end_date: sel?.end ?? null });
+    if (error) { w?.close(); return void toast.error(error.message.includes("DATES_OCCUPEES") ? "Ces dates sont déjà occupées." : "Envoi impossible, réessayez."); }
+    const url = whatsappLink(settings.whatsapp, l, action, datesLabel);
+    if (w) w.location.href = url; else window.location.href = url;
+  };
   const cat = categoryOf(l.category);
   const action = cat?.cta ?? "Commander";
   const unavailable = l.status === "Vendu / Occupé" || l.status === "Rupture de stock";
@@ -60,10 +88,11 @@ function Detail() {
     e.preventDefault();
     const p = formSchema.safeParse(form);
     if (!p.success) return void toast.error(p.error.issues[0]?.message ?? "Formulaire invalide");
+    if (!datesOk()) return;
     setSending(true);
-    const { error } = await supabase.from("requests").insert({ listing_id: l.id, reference: l.reference, name: p.data.name, phone: p.data.phone, message: p.data.message || null });
+    const { error } = await supabase.from("requests").insert({ listing_id: l.id, reference: l.reference, name: p.data.name, phone: p.data.phone, message: p.data.message || null, start_date: sel?.start ?? null, end_date: sel?.end ?? null });
     setSending(false);
-    if (error) return void toast.error("Envoi impossible, réessayez.");
+    if (error) return void toast.error(error.message.includes("DATES_OCCUPEES") ? "Ces dates sont déjà occupées." : "Envoi impossible, réessayez.");
     toast.success("Demande envoyée ! SewaPoint vous recontacte rapidement.");
     setForm({ name: "", phone: "", message: "" });
   };
@@ -105,8 +134,17 @@ function Detail() {
             <p className="mt-1 text-xs text-muted-foreground">Référence : <span className="font-mono font-semibold">{l.reference}</span></p>
             {features.length > 0 && <ul className="mt-5 space-y-2">{features.map((f) => <li key={f} className="flex items-center gap-2 text-sm"><Check className="h-4 w-4 text-success" />{f}</li>)}</ul>}
             {l.variants && <p className="mt-4 text-sm"><span className="font-semibold">Variantes :</span> {l.variants}</p>}
-            <Button asChild size="lg" disabled={unavailable} className="mt-6 w-full bg-whatsapp text-primary-foreground hover:bg-whatsapp/90">
-              <a href={whatsappLink(settings.whatsapp, l, action)} target="_blank" rel="noreferrer"><MessageCircle /> {action} via WhatsApp</a>
+            {bookable && (
+              <div className="mt-6 rounded-xl border p-3">
+                <p className="text-sm font-semibold">Disponibilité — choisissez vos dates</p>
+                <Calendar mode="range" locale={fr} selected={range} onSelect={setRange} disabled={[{ before: today }, isOccupied]}
+                  modifiers={{ booked: isOccupied }} modifiersClassNames={{ booked: "line-through text-destructive" }} className="mx-auto" />
+                <p className="text-xs text-muted-foreground"><span className="text-destructive line-through">12</span> = date occupée</p>
+                {datesLabel && <p className={`mt-1 text-sm ${selFree ? "text-success" : "text-destructive"}`}>{datesLabel}{selFree ? "" : " — dates occupées"}</p>}
+              </div>
+            )}
+            <Button size="lg" disabled={unavailable || !selFree} onClick={orderWhatsapp} className="mt-6 w-full bg-whatsapp text-primary-foreground hover:bg-whatsapp/90">
+              <MessageCircle /> {action} via WhatsApp
             </Button>
             <p className="mt-3 text-center text-xs text-muted-foreground">Votre demande est reçue directement par l'administrateur SewaPoint.</p>
           </div>

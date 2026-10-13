@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Admin rights come from `user_roles` (first signed-up user auto-promoted by trigger); never from user metadata — keeps privileges server-enforced.
+- Listing media live in the private `media` bucket and are stored as long-lived signed URLs — workspace blocks public buckets.

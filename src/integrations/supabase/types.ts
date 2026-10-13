@@ -80,32 +80,76 @@ export type Database = {
       requests: {
         Row: {
           created_at: string
+          end_date: string | null
           id: string
           listing_id: string | null
           message: string | null
           name: string
           phone: string
           reference: string | null
+          start_date: string | null
+          status: string
         }
         Insert: {
           created_at?: string
+          end_date?: string | null
           id?: string
           listing_id?: string | null
           message?: string | null
           name: string
           phone: string
           reference?: string | null
+          start_date?: string | null
+          status?: string
         }
         Update: {
           created_at?: string
+          end_date?: string | null
           id?: string
           listing_id?: string | null
           message?: string | null
           name?: string
           phone?: string
           reference?: string | null
+          start_date?: string | null
+          status?: string
         }
         Relationships: []
+      }
+      reservations: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          listing_id: string
+          note: string | null
+          start_date: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          listing_id: string
+          note?: string | null
+          start_date: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          listing_id?: string
+          note?: string | null
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       settings: {
         Row: {
@@ -142,6 +186,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      whatsapp_orders: {
+        Row: {
+          action: string | null
+          created_at: string
+          end_date: string | null
+          id: string
+          listing_id: string | null
+          reference: string
+          start_date: string | null
+          status: string
+          title: string | null
+        }
+        Insert: {
+          action?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          listing_id?: string | null
+          reference: string
+          start_date?: string | null
+          status?: string
+          title?: string | null
+        }
+        Update: {
+          action?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          listing_id?: string | null
+          reference?: string
+          start_date?: string | null
+          status?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_orders_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

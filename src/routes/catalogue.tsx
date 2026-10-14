@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ListingCard } from "@/components/site";
 import { CATEGORIES, CONDITIONS, STATUSES, categoryOf, listingsQuery } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/i18n";
 
 const search = z.object({ cat: z.string().optional(), sub: z.string().optional(), cond: z.string().optional(), status: z.string().optional(), min: z.coerce.number().optional(), max: z.coerce.number().optional() });
 
@@ -28,6 +29,7 @@ const chip = (active: boolean) => cn("rounded-full border px-4 py-1.5 text-sm fo
 function Catalogue() {
   const { data } = useSuspenseQuery(listingsQuery());
   const s = Route.useSearch();
+  const { t } = useLang();
   const navigate = Route.useNavigate();
   const [q, setQ] = useState("");
   const upd = (k: string, v: string) => navigate({ search: (p) => ({ ...p, [k]: v === "" ? undefined : v }) as never, replace: true });
@@ -39,32 +41,32 @@ function Catalogue() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="text-4xl font-extrabold">{cat?.label ?? "Tout le catalogue"}</h1>
+      <h1 className="text-4xl font-extrabold">{t(cat?.label ?? "Tout le catalogue")}</h1>
       <div className="mt-6 flex flex-wrap gap-2">
-        <Link to="/catalogue" search={{}} className={chip(!s.cat)}>Tout</Link>
-        {CATEGORIES.map((c) => <Link key={c.id} to="/catalogue" search={{ cat: c.id }} className={chip(s.cat === c.id)}>{c.short}</Link>)}
+        <Link to="/catalogue" search={{}} className={chip(!s.cat)}>{t("Tout")}</Link>
+        {CATEGORIES.map((c) => <Link key={c.id} to="/catalogue" search={{ cat: c.id }} className={chip(s.cat === c.id)}>{t(c.short)}</Link>)}
       </div>
       {cat && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {cat.subs.map((sub) => <Link key={sub} to="/catalogue" search={{ ...s, sub: s.sub === sub ? undefined : sub }} className={chip(s.sub === sub)}>{sub}</Link>)}
+          {cat.subs.map((sub) => <Link key={sub} to="/catalogue" search={{ ...s, sub: s.sub === sub ? undefined : sub }} className={chip(s.sub === sub)}>{t(sub)}</Link>)}
         </div>
       )}
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        <Input placeholder="Rechercher un titre ou une référence…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-xs bg-card" />
+        <Input placeholder={t("Rechercher un titre ou une référence…")} value={q} onChange={(e) => setQ(e.target.value)} className="max-w-xs bg-card" />
         <select className="h-9 rounded-md border bg-card px-3 text-sm" value={s.cond ?? ""} onChange={(e) => upd("cond", e.target.value)}>
-          <option value="">Neuf & Occasion</option>{CONDITIONS.map((c) => <option key={c}>{c}</option>)}
+          <option value="">{t("Neuf & Occasion")}</option>{CONDITIONS.map((c) => <option key={c} value={c}>{t(c)}</option>)}
         </select>
         <select className="h-9 rounded-md border bg-card px-3 text-sm" value={s.status ?? ""} onChange={(e) => upd("status", e.target.value)}>
-          <option value="">Tous les statuts</option>{STATUSES.map((c) => <option key={c}>{c}</option>)}
+          <option value="">{t("Tous les statuts")}</option>{STATUSES.map((c) => <option key={c} value={c}>{t(c)}</option>)}
         </select>
-        <Input type="number" min="0" placeholder="Prix min" defaultValue={s.min ?? ""} onBlur={(e) => upd("min", e.target.value)} className="w-28 bg-card" />
-        <Input type="number" min="0" placeholder="Prix max" defaultValue={s.max ?? ""} onBlur={(e) => upd("max", e.target.value)} className="w-28 bg-card" />
-        <span className="text-sm text-muted-foreground">{items.length} résultat(s)</span>
+        <Input type="number" min="0" placeholder={t("Prix min")} defaultValue={s.min ?? ""} onBlur={(e) => upd("min", e.target.value)} className="w-28 bg-card" />
+        <Input type="number" min="0" placeholder={t("Prix max")} defaultValue={s.max ?? ""} onBlur={(e) => upd("max", e.target.value)} className="w-28 bg-card" />
+        <span className="text-sm text-muted-foreground">{items.length} {t("résultat(s)")}</span>
       </div>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((l) => <ListingCard key={l.id} l={l} />)}
       </div>
-      {items.length === 0 && <p className="mt-16 text-center text-muted-foreground">Aucune annonce ne correspond à ces filtres.</p>}
+      {items.length === 0 && <p className="mt-16 text-center text-muted-foreground">{t("Aucune annonce ne correspond à ces filtres.")}</p>}
     </div>
   );
 }

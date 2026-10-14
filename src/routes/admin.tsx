@@ -19,6 +19,7 @@ export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "Administration — SewaPoint" },
+      { name: "robots", content: "noindex, nofollow" },
       { name: "description", content: "Tableau de bord SewaPoint : annonces, statuts, demandes et WhatsApp." },
       { property: "og:title", content: "Administration SewaPoint" },
       { property: "og:description", content: "Espace de gestion SewaPoint." },

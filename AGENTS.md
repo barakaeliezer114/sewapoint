@@ -11,3 +11,4 @@
 
 - Admin rights come from `user_roles` (first signed-up user auto-promoted by trigger); never from user metadata — keeps privileges server-enforced.
 - Listing media live in the private `media` bucket and are stored as long-lived signed URLs — workspace blocks public buckets.
+- Brand artwork stays out of the repo as `.asset.json` CDN pointers under `src/assets` (emblem + full lockup); the header shows the emblem, the footer the full lockup, and `public/favicon.png` is a square copy of the emblem — keeps binaries off git and the tab icon in sync with the logo.

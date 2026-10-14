@@ -2,14 +2,24 @@ import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { categoryOf, formatPrice, type Listing } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/sewapoint-logo.png.asset.json";
+import emblemAsset from "@/assets/sewapoint-emblem.png.asset.json";
 
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">S</span>
-          Sewa<span className="text-accent">Point</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src={emblemAsset.url}
+            alt="Emblème SewaPoint"
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-xl object-cover shadow-sm ring-1 ring-black/10"
+          />
+          <span className="font-display text-xl font-bold">
+            Sewa<span className="text-accent">Point</span>
+          </span>
         </Link>
         <nav className="flex items-center gap-1 text-sm font-medium">
           <Link to="/" className="rounded-lg px-3 py-2 hover:bg-muted" activeOptions={{ exact: true }} activeProps={{ className: "bg-muted" }}>Accueil</Link>
@@ -26,8 +36,14 @@ export function SiteFooter() {
     <footer className="mt-20 border-t bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-2">
         <div>
-          <p className="font-display text-2xl font-bold">SewaPoint</p>
-          <p className="mt-2 max-w-md text-sm opacity-80">Votre intermédiaire unique pour l'immobilier, les séjours, les événements, le logement étudiant, l'informatique, la mode et les équipements.</p>
+          <img
+            src={logoAsset.url}
+            alt="SewaPoint — Étudier, Découvrir, Voyager"
+            width={208}
+            height={175}
+            className="w-52 rounded-2xl ring-1 ring-primary-foreground/15"
+          />
+          <p className="mt-4 max-w-md text-sm opacity-80">Votre intermédiaire unique pour l'immobilier, les séjours, les événements, le logement étudiant, l'informatique, la mode et les équipements.</p>
         </div>
         <p className="text-sm opacity-80 md:text-right">Toutes les demandes sont traitées directement par l'équipe SewaPoint.<br />© {new Date().getFullYear()} SewaPoint</p>
       </div>

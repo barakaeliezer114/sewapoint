@@ -39,7 +39,7 @@
 /* Palette reprise du logo SewaPoint : bleu marine, bleu ciel, bleu royal, or. */
 :root {
   --radius: 0.9rem;
-  --brand: #040D29;
+  --brand: #011240;
   --background: #F4F8FD;
   --foreground: #05122B;
   --card: #FFFFFF;
@@ -51,7 +51,7 @@
   --secondary: #E4EEFA;
   --secondary-foreground: #0B2A55;
   --muted: #EAF1F9;
-  --muted-foreground: #56698A;
+  --muted-foreground: #4B5F80;
   --accent: #1EA1F3;
   --accent-foreground: #04102A;
   --destructive: #D2453F;

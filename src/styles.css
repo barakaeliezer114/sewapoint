@@ -69,3 +69,10 @@
   body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
 }
+
+@keyframes sp-bg-spin {
+  to { transform: rotate(360deg); }
+}
+.sp-bg-spin {
+  animation: sp-bg-spin 90s linear infinite;
+}

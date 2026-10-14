@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader, SiteFooter } from "@/components/site";
 import { Toaster } from "@/components/ui/sonner";
+import monogramBg from "@/assets/monogram-bg.jpg.asset.json";
 
 function NotFoundComponent() {
   return (
@@ -105,6 +106,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 flex items-center justify-center overflow-hidden">
+          <img
+            src={monogramBg.url}
+            alt=""
+            className="sp-bg-spin h-[140vmax] w-[140vmax] max-w-none object-contain opacity-[0.07] mix-blend-multiply"
+          />
+        </div>
         {children}
         <Scripts />
       </body>

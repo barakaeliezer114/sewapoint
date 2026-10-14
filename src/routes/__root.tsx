@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader, SiteFooter } from "@/components/site";
 import { Toaster } from "@/components/ui/sonner";
+import { LangProvider } from "@/lib/i18n";
 import monogramBg from "@/assets/monogram-bg.jpg.asset.json";
 
 function NotFoundComponent() {
@@ -125,12 +126,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <LangProvider>
       <SiteHeader />
       <main className="min-h-[60vh]">
         <Outlet />
       </main>
       <SiteFooter />
       <Toaster richColors />
+      </LangProvider>
     </QueryClientProvider>
   );
 }

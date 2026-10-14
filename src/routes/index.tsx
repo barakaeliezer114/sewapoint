@@ -28,7 +28,7 @@ function Index() {
     <>
       <section className="relative overflow-hidden">
         <img src={hero} alt="" width={1600} height={912} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand via-brand/85 to-brand/25" />
         <div className="relative mx-auto max-w-7xl px-4 py-24 text-primary-foreground md:py-32">
           <p className="inline-flex rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-foreground">Intermédiaire unique</p>
           <h1 className="mt-5 max-w-2xl text-4xl font-extrabold leading-tight md:text-6xl">Un seul contact pour tout trouver, réserver et acheter.</h1>

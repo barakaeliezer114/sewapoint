@@ -33,7 +33,7 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 border-t bg-primary text-primary-foreground">
+    <footer className="mt-20 bg-brand text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-2">
         <div>
           <img
@@ -41,11 +41,11 @@ export function SiteFooter() {
             alt="SewaPoint — Étudier, Découvrir, Voyager"
             width={208}
             height={175}
-            className="w-52 rounded-2xl ring-1 ring-primary-foreground/15"
+            className="w-52 rounded-2xl"
           />
-          <p className="mt-4 max-w-md text-sm opacity-80">Votre intermédiaire unique pour l'immobilier, les séjours, les événements, le logement étudiant, l'informatique, la mode et les équipements.</p>
+          <p className="mt-4 max-w-md text-sm opacity-90">Votre intermédiaire unique pour l'immobilier, les séjours, les événements, le logement étudiant, l'informatique, la mode et les équipements.</p>
         </div>
-        <p className="text-sm opacity-80 md:text-right">Toutes les demandes sont traitées directement par l'équipe SewaPoint.<br />© {new Date().getFullYear()} SewaPoint</p>
+        <p className="text-sm opacity-90 md:text-right">Toutes les demandes sont traitées directement par l'équipe SewaPoint.<br />© {new Date().getFullYear()} SewaPoint</p>
       </div>
     </footer>
   );
@@ -53,7 +53,7 @@ export function SiteFooter() {
 
 export function StatusBadge({ status }: { status: string }) {
   const tone =
-    status === "Disponible" ? "bg-success text-primary-foreground" :
+    status === "Disponible" ? "bg-primary text-primary-foreground" :
     status === "En réserve" ? "bg-warning text-accent-foreground" :
     status === "Rupture de stock" ? "bg-destructive text-destructive-foreground" :
     "bg-muted-foreground text-primary-foreground";

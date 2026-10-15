@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { Trash2, Pencil, LogOut } from "lucide-react";
-import emblemAsset from "@/assets/sewapoint-emblem.png.asset.json";
+import emblemAsset from "@/assets/sewapoint-emblem.png";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,7 +74,7 @@ function AuthForm() {
   };
   return (
     <form onSubmit={submit} className="mx-auto my-20 max-w-sm space-y-4 rounded-2xl border bg-card p-8">
-      <img src={emblemAsset.url} alt="SewaPoint" width={72} height={72} className="h-[72px] w-[72px] rounded-2xl object-cover ring-1 ring-black/10" />
+      <img src={emblemAsset} alt="SewaPoint" width={72} height={72} className="h-[72px] w-[72px] rounded-2xl object-cover ring-1 ring-black/10" />
       <h1 className="text-2xl font-bold">{mode === "in" ? "Connexion admin" : "Créer le compte admin"}</h1>
       <p className="text-sm text-muted-foreground">Le premier compte créé devient l'administrateur SewaPoint.</p>
       <Input type="email" required placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />

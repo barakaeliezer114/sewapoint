@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { categoryOf, formatPrice, type Listing } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import { LANGS, useLang, type Lang } from "@/lib/i18n";
-import logoAsset from "@/assets/sewapoint-logo.png.asset.json";
-import emblemAsset from "@/assets/sewapoint-emblem.png.asset.json";
+import logoAsset from "@/assets/sewapoint-logo.png";
+import emblemAsset from "@/assets/sewapoint-emblem.png";
 
 export function SiteHeader() {
   const { t, lang, setLang } = useLang();
@@ -13,7 +13,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src={emblemAsset.url}
+            src={emblemAsset}
             alt="Emblème SewaPoint"
             width={40}
             height={40}
@@ -42,7 +42,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-2">
         <div>
           <img
-            src={logoAsset.url}
+            src={logoAsset}
             alt="SewaPoint — Étudier, Découvrir, Voyager"
             width={208}
             height={175}

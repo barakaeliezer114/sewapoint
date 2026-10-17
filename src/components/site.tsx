@@ -25,6 +25,7 @@ export function SiteHeader() {
         </Link>
         <nav className="flex items-center gap-1 text-sm font-medium">
           <Link to="/" className="rounded-lg px-3 py-2 hover:bg-muted" activeOptions={{ exact: true }} activeProps={{ className: "bg-muted" }}>{t("Accueil")}</Link>
+          <Link to="/a-propos" className="rounded-lg px-3 py-2 hover:bg-muted" activeProps={{ className: "bg-muted" }}>{t("Comment ça marche")}</Link>
           <Link to="/catalogue" className="rounded-lg px-3 py-2 hover:bg-muted" activeProps={{ className: "bg-muted" }}>{t("Catalogue")}</Link>
           <select aria-label={t("Langue")} value={lang} onChange={(e) => setLang(e.target.value as Lang)} className="ml-1 h-9 rounded-lg border bg-card px-2 text-sm">
             {LANGS.map((l) => <option key={l.id} value={l.id}>{l.flag} · {l.label}</option>)}

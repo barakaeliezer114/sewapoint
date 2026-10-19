@@ -12,9 +12,11 @@ const ICONS = { immobilier: Building2, hebergement: BedDouble, evenements: Party
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "SewaPoint — Biens & services via un intermédiaire unique" },
-      { name: "description", content: "Maisons, parcelles, hôtels, salles de fêtes, homes étudiants, PC gaming, mode et machines : SewaPoint gère chaque demande pour vous." },
-      { property: "og:title", content: "SewaPoint — Votre intermédiaire unique" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Inkinet — Biens & services via un intermédiaire unique" },
+      { name: "description", content: "Maisons, parcelles, hôtels, salles de fêtes, homes étudiants, PC gaming, mode et machines : Inkinet gère chaque demande pour vous." },
+      { property: "og:title", content: "Inkinet — Votre intermédiaire unique" },
       { property: "og:description", content: "Un seul contact pour réserver, acheter ou louer en toute confiance." },
     ],
   }),
@@ -35,7 +37,7 @@ function Index() {
         <div className="relative mx-auto max-w-7xl px-4 py-24 text-primary-foreground md:py-32">
           <p className="inline-flex rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-foreground">{t("Intermédiaire unique")}</p>
           <h1 className="mt-5 max-w-2xl text-4xl font-extrabold leading-tight md:text-6xl">{t("Un seul contact pour tout trouver, réserver et acheter.")}</h1>
-          <p className="mt-5 max-w-xl text-lg opacity-90">{t("Immobilier, séjours, événements, logements étudiants, informatique, mode et équipements. SewaPoint traite votre demande et fait la liaison pour vous.")}</p>
+          <p className="mt-5 max-w-xl text-lg opacity-90">{t("Immobilier, séjours, événements, logements étudiants, informatique, mode et équipements. Inkinet traite votre demande et fait la liaison pour vous.")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90"><Link to="/catalogue"><Search /> {t("Explorer le catalogue")}</Link></Button>
           </div>
@@ -71,7 +73,7 @@ function Index() {
         <div className="grid gap-6 rounded-3xl bg-secondary p-8 md:grid-cols-3 md:p-12">
           {[
             { i: Search, t: "1. Choisissez", d: "Parcourez les annonces et repérez la référence qui vous intéresse." },
-            { i: MessageCircle, t: "2. Contactez SewaPoint", d: "Un clic envoie la référence exacte à notre équipe via WhatsApp ou formulaire." },
+            { i: MessageCircle, t: "2. Contactez Inkinet", d: "Un clic envoie la référence exacte à notre équipe via WhatsApp ou formulaire." },
             { i: ShieldCheck, t: "3. On s'occupe du reste", d: "Nous vérifions, négocions et organisons la liaison en toute sécurité." },
           ].map(({ i: I, t, d }) => (
             <div key={t}><I className="h-8 w-8 text-primary" /><h3 className="mt-3 text-xl font-bold">{tr(t)}</h3><p className="mt-2 text-muted-foreground">{tr(d)}</p></div>

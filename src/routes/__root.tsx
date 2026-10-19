@@ -82,8 +82,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SewaPoint — Votre intermédiaire multi-services" },
-      { name: "description", content: "Immobilier, séjours, événements, logements étudiants, PC, mode et équipements via un seul intermédiaire : SewaPoint." },
+      { title: "Inkinet — Votre intermédiaire multi-services" },
+      { name: "description", content: "Immobilier, séjours, événements, logements étudiants, PC, mode et équipements via un seul intermédiaire : Inkinet." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

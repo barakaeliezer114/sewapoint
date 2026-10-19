@@ -14,10 +14,12 @@ export const Route = createFileRoute("/catalogue")({
   validateSearch: search,
   head: () => ({
     meta: [
-      { title: "Catalogue SewaPoint — Annonces & services" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Catalogue Inkinet — Annonces & services" },
       { name: "description", content: "Filtrez par catégorie, état et disponibilité : immobilier, hébergement, événements, logements étudiants, PC, mode, machines." },
-      { property: "og:title", content: "Catalogue SewaPoint" },
-      { property: "og:description", content: "Toutes les annonces SewaPoint au même endroit." },
+      { property: "og:title", content: "Catalogue Inkinet" },
+      { property: "og:description", content: "Toutes les annonces Inkinet au même endroit." },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(listingsQuery()),

@@ -26,13 +26,15 @@ export const Route = createFileRoute("/annonce/$ref")({
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.title} — SewaPoint` },
-          { name: "description", content: loaderData.desc ?? "Annonce SewaPoint" },
-          { property: "og:title", content: `${loaderData.title} — SewaPoint` },
-          { property: "og:description", content: loaderData.desc ?? "Annonce SewaPoint" },
+          { property: "og:type", content: "website" },
+          { name: "twitter:card", content: "summary_large_image" },
+          { title: `${loaderData.title} — Inkinet` },
+          { name: "description", content: loaderData.desc ?? "Annonce Inkinet" },
+          { property: "og:title", content: `${loaderData.title} — Inkinet` },
+          { property: "og:description", content: loaderData.desc ?? "Annonce Inkinet" },
           ...(loaderData.img?.startsWith("https://") ? [{ property: "og:image", content: loaderData.img }, { name: "twitter:image", content: loaderData.img }] : []),
         ]
-      : [{ title: "Annonce introuvable — SewaPoint" }, { name: "robots", content: "noindex" }],
+      : [{ title: "Annonce introuvable — Inkinet" }, { name: "description", content: "Cette annonce Inkinet est introuvable." }, { property: "og:title", content: "Annonce introuvable — Inkinet" }, { property: "og:description", content: "Cette annonce Inkinet est introuvable." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, { name: "robots", content: "noindex" }],
   }),
   notFoundComponent: NotFound,
   component: Detail,
@@ -99,7 +101,7 @@ function Detail() {
     const { error } = await supabase.from("requests").insert({ listing_id: l.id, reference: l.reference, name: p.data.name, phone: p.data.phone, message: p.data.message || null, start_date: sel?.start ?? null, end_date: sel?.end ?? null });
     setSending(false);
     if (error) return void toast.error(error.message.includes("DATES_OCCUPEES") ? t("Ces dates sont déjà occupées.") : t("Envoi impossible, réessayez."));
-    toast.success(t("Demande envoyée ! SewaPoint vous recontacte rapidement."));
+    toast.success(t("Demande envoyée ! Inkinet vous recontacte rapidement."));
     setForm({ name: "", phone: "", message: "" });
   };
 
@@ -152,14 +154,14 @@ function Detail() {
             <Button size="lg" disabled={unavailable || !selFree} onClick={orderWhatsapp} className="mt-6 w-full bg-whatsapp text-primary-foreground hover:bg-whatsapp/90">
               <MessageCircle /> {t(action)} {t("via WhatsApp")}
             </Button>
-            <p className="mt-3 text-center text-xs text-muted-foreground">{t("Votre demande est reçue directement par l'administrateur SewaPoint.")}</p>
+            <p className="mt-3 text-center text-xs text-muted-foreground">{t("Votre demande est reçue directement par l'administrateur Inkinet.")}</p>
           </div>
           <form onSubmit={submit} className="space-y-3 rounded-2xl border bg-card p-6">
             <h2 className="font-bold">{t("Ou laissez une demande")}</h2>
             <Input placeholder={t("Votre nom")} value={form.name} maxLength={100} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             <Input placeholder={t("Téléphone / WhatsApp")} value={form.phone} maxLength={30} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
             <Textarea placeholder={t("Message (dates, taille, questions…)")} value={form.message} maxLength={1000} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-            <Button type="submit" className="w-full" disabled={sending}>{sending ? t("Envoi…") : `${t(action)} — ${t("envoyer à SewaPoint")}`}</Button>
+            <Button type="submit" className="w-full" disabled={sending}>{sending ? t("Envoi…") : `${t(action)} — ${t("envoyer à Inkinet")}`}</Button>
           </form>
         </aside>
       </div>

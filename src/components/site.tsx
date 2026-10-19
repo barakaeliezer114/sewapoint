@@ -14,13 +14,13 @@ export function SiteHeader() {
         <Link to="/" className="flex items-center gap-2.5">
           <img
             src={emblemAsset}
-            alt="Emblème SewaPoint"
+            alt="Emblème Inkinet"
             width={40}
             height={40}
             className="h-10 w-10 rounded-xl object-cover shadow-sm ring-1 ring-black/10"
           />
           <span className="font-display text-xl font-bold">
-            Sewa<span className="text-accent">Point</span>
+            Inki<span className="text-accent">net</span>
           </span>
         </Link>
         <nav className="flex items-center gap-1 text-sm font-medium">
@@ -44,14 +44,14 @@ export function SiteFooter() {
         <div>
           <img
             src={logoAsset}
-            alt="SewaPoint — Étudier, Découvrir, Voyager"
+            alt="Inkinet — Étudier, Découvrir, Voyager"
             width={208}
             height={175}
             className="w-52 rounded-2xl"
           />
           <p className="mt-4 max-w-md text-sm opacity-90">{t("Votre intermédiaire unique pour l'immobilier, les séjours, les événements, le logement étudiant, l'informatique, la mode et les équipements.")}</p>
         </div>
-        <p className="text-sm opacity-90 md:text-right">{t("Toutes les demandes sont traitées directement par l'équipe SewaPoint.")}<br />© {new Date().getFullYear()} SewaPoint</p>
+        <p className="text-sm opacity-90 md:text-right">{t("Toutes les demandes sont traitées directement par l'équipe Inkinet.")}<br />© {new Date().getFullYear()} Inkinet</p>
       </div>
     </footer>
   );

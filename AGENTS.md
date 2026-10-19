@@ -11,4 +11,5 @@
 
 - Admin rights come from `user_roles` (first signed-up user auto-promoted by trigger); never from user metadata — keeps privileges server-enforced.
 - Listing media live in the private `media` bucket and are stored as long-lived signed URLs — workspace blocks public buckets.
-- Brand artwork lives as real image files in `src/assets` (emblem, full lockup, monogram background), imported directly; the header shows the emblem, the footer the full lockup, and `public/favicon.png` is a square copy of the emblem — the site must stay self-hostable with no dependency on Lovable hosting.
+- Brand artwork lives as real image files in `src/assets` (emblem, full lockup, monogram background), imported directly; the header shows the emblem, the footer the current full lockup, and `public/favicon.png` is a square copy of the emblem — the site must stay self-hostable with no dependency on Lovable hosting.
+- Preserve persisted language storage keys and existing listing references during brand renames so returning visitors and historical orders retain continuity.

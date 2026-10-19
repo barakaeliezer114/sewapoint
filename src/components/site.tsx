@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { categoryOf, formatPrice, type Listing } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import { LANGS, useLang, type Lang } from "@/lib/i18n";
-import logoAsset from "@/assets/sewapoint-logo.png";
+import logoAsset from "@/assets/inkinet-logo.png";
 import emblemAsset from "@/assets/sewapoint-emblem.png";
 
 export function SiteHeader() {

@@ -53,7 +53,7 @@ export const settingsQuery = () =>
   });
 
 export function whatsappLink(phone: string, l: Pick<Listing, "reference" | "title" | "price" | "currency" | "price_unit">, action: string, dates?: string) {
-  const msg = `Bonjour SewaPoint 👋\nJe souhaite : ${action}\n\nRéférence : ${l.reference}\nArticle : ${l.title}\nPrix : ${formatPrice(l)}${dates ? `\nDates : ${dates}` : ""}\n\nMerci de me recontacter.`;
+  const msg = `Bonjour Inkinet 👋\nJe souhaite : ${action}\n\nRéférence : ${l.reference}\nArticle : ${l.title}\nPrix : ${formatPrice(l)}${dates ? `\nDates : ${dates}` : ""}\n\nMerci de me recontacter.`;
   return `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(msg)}`;
 }
 

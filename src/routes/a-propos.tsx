@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/a-propos")({
   head: () => ({
     meta: [
-      { title: "Comment ça marche — SewaPoint" },
-      { name: "description", content: "Comprendre SewaPoint : un intermédiaire unique pour réserver, acheter et louer en toute confiance. Fonctionnement, calendrier de disponibilité et demande WhatsApp." },
-      { property: "og:title", content: "Comment ça marche — SewaPoint" },
+      { title: "Comment ça marche — Inkinet" },
+      { name: "description", content: "Comprendre Inkinet : un intermédiaire unique pour réserver, acheter et louer en toute confiance. Fonctionnement, calendrier de disponibilité et demande WhatsApp." },
+      { property: "og:title", content: "Comment ça marche — Inkinet" },
       { property: "og:description", content: "Un seul contact pour tout trouver, réserver et acheter en toute confiance." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/a-propos")({
 
 const STEPS = [
   { i: Search, t: "1. Choisissez", d: "Parcourez les annonces et repérez la référence qui vous intéresse." },
-  { i: MessageCircle, t: "2. Contactez SewaPoint", d: "Un clic envoie la référence exacte à notre équipe via WhatsApp ou formulaire." },
+  { i: MessageCircle, t: "2. Contactez Inkinet", d: "Un clic envoie la référence exacte à notre équipe via WhatsApp ou formulaire." },
   { i: ShieldCheck, t: "3. On s'occupe du reste", d: "Nous vérifions, négocions et organisons la liaison en toute sécurité." },
 ];
 
@@ -31,7 +31,7 @@ function APropos() {
       <section className="relative overflow-hidden bg-brand text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
           <h1 className="text-4xl font-extrabold md:text-5xl">{t("Comment ça marche")}</h1>
-          <p className="mt-4 max-w-2xl text-lg opacity-90">{t("SewaPoint est votre intermédiaire unique : vous ne contactez jamais les vendeurs ou propriétaires directement. Chaque annonce, chaque réservation et chaque achat passe par notre équipe, qui vérifie, négocie et organise la liaison pour vous.")}</p>
+          <p className="mt-4 max-w-2xl text-lg opacity-90">{t("Inkinet est votre intermédiaire unique : vous ne contactez jamais les vendeurs ou propriétaires directement. Chaque annonce, chaque réservation et chaque achat passe par notre équipe, qui vérifie, négocie et organise la liaison pour vous.")}</p>
         </div>
       </section>
 
@@ -78,7 +78,7 @@ function APropos() {
           <div className="rounded-2xl border bg-card p-6">
             <Landmark className="h-8 w-8 text-primary" />
             <h3 className="mt-4 text-lg font-bold">{t("Le formulaire de demande")}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{t("Vous préférez laisser un message ? Remplissez le formulaire : votre nom, votre téléphone et votre question. L'équipe SewaPoint vous recontacte rapidement.")}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t("Vous préférez laisser un message ? Remplissez le formulaire : votre nom, votre téléphone et votre question. L'équipe Inkinet vous recontacte rapidement.")}</p>
           </div>
         </div>
         <div className="mt-6 flex items-start gap-4 rounded-2xl bg-secondary p-6">

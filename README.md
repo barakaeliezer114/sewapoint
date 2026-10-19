@@ -1,12 +1,12 @@
-# Sewapoint
+# Inkinet
 
-Crée l'application web multi-services "SewaPoint", une plateforme moderne, responsive et intuitive où l'administrateur sert d'INTERMÉDIAIRE UNIQUE entre les offreurs et les demandeurs de biens et services.
+Crée l'application web multi-services "Inkinet", une plateforme moderne, responsive et intuitive où l'administrateur sert d'INTERMÉDIAIRE UNIQUE entre les offreurs et les demandeurs de biens et services.
 
-### 1. Identité & Concept ("SewaPoint")
-- Nom du projet : SewaPoint
+### 1. Identité & Concept ("Inkinet")
+- Nom du projet : Inkinet
 - Rôle : Intermédiaire unique et centrale de réservation / commande.
 - Principe : Aucun contact direct entre les visiteurs et les vendeurs/propriétaires tiers.
-- Flux de commande : Tous les boutons d'action ("Commander", "Réserver", "Demander une visite", "Acheter") déclenchent une prise de contact DIRECTE avec l'administrateur SewaPoint (via bouton WhatsApp pré-rempli ou formulaire interne). L'administrateur reçoit la référence exacte du produit/service, traite la demande, puis fait la liaison.
+- Flux de commande : Tous les boutons d'action ("Commander", "Réserver", "Demander une visite", "Acheter") déclenchent une prise de contact DIRECTE avec l'administrateur Inkinet (via bouton WhatsApp pré-rempli ou formulaire interne). L'administrateur reçoit la référence exacte du produit/service, traite la demande, puis fait la liaison.
 
 ### 2. Structure & Catégories du Catalogue
 Organiser le catalogue avec des onglets et filtres clairs :
@@ -22,10 +22,10 @@ Organiser le catalogue avec des onglets et filtres clairs :
 - Galerie photos haute qualité et lecteur vidéo intégré (visites virtuelles de biens/salles, démos gaming, vidéos de présentation produits).
 - Fiche détaillée pour chaque article : titre, prix, état (Neuf / Occasion), caractéristiques techniques ou variantes (tailles, couleurs), statut de disponibilité, et bouton d'action WhatsApp pré-rempli avec référence unique, nom et prix.
 
-### 4. Espace Administration (Dashboard SewaPoint)
+### 4. Espace Administration (Dashboard Inkinet)
 - Interface de gestion permettant d'ajouter de nouvelles annonces (catégorie, photos/vidéos, caractéristiques, prix, statut).
 - Gestion des statuts : "Disponible", "En réserve", "Rupture de stock", "Vendu / Occupé".
-- Configuration du numéro WhatsApp de l'administrateur SewaPoint.
+- Configuration du numéro WhatsApp de l'administrateur Inkinet.
 
 This project was built with [Lovable](https://lovable.dev).
 

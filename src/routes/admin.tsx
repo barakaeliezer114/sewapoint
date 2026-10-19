@@ -18,11 +18,13 @@ import { CATEGORIES, CONDITIONS, STATUSES, formatPrice, listingsQuery, settingsQ
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Administration — SewaPoint" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Administration — Inkinet" },
       { name: "robots", content: "noindex, nofollow" },
-      { name: "description", content: "Tableau de bord SewaPoint : annonces, statuts, demandes et WhatsApp." },
-      { property: "og:title", content: "Administration SewaPoint" },
-      { property: "og:description", content: "Espace de gestion SewaPoint." },
+      { name: "description", content: "Tableau de bord Inkinet : annonces, statuts, demandes et WhatsApp." },
+      { property: "og:title", content: "Administration Inkinet" },
+      { property: "og:description", content: "Espace de gestion Inkinet." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -74,9 +76,9 @@ function AuthForm() {
   };
   return (
     <form onSubmit={submit} className="mx-auto my-20 max-w-sm space-y-4 rounded-2xl border bg-card p-8">
-      <img src={emblemAsset} alt="SewaPoint" width={72} height={72} className="h-[72px] w-[72px] rounded-2xl object-cover ring-1 ring-black/10" />
+      <img src={emblemAsset} alt="Inkinet" width={72} height={72} className="h-[72px] w-[72px] rounded-2xl object-cover ring-1 ring-black/10" />
       <h1 className="text-2xl font-bold">{mode === "in" ? "Connexion admin" : "Créer le compte admin"}</h1>
-      <p className="text-sm text-muted-foreground">Le premier compte créé devient l'administrateur SewaPoint.</p>
+      <p className="text-sm text-muted-foreground">Le premier compte créé devient l'administrateur Inkinet.</p>
       <Input type="email" required placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
       <Input type="password" required minLength={6} placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} />
       <Button className="w-full" disabled={busy}>{mode === "in" ? "Se connecter" : "Créer le compte"}</Button>
@@ -108,7 +110,7 @@ function Dashboard({ email }: { email: string }) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div><h1 className="text-3xl font-extrabold">Dashboard SewaPoint</h1><p className="text-sm text-muted-foreground">{email}</p></div>
+        <div><h1 className="text-3xl font-extrabold">Dashboard Inkinet</h1><p className="text-sm text-muted-foreground">{email}</p></div>
         <Button variant="outline" onClick={() => supabase.auth.signOut()}><LogOut /> Déconnexion</Button>
       </div>
       <Tabs value={tab} onValueChange={(v) => { setTab(v); if (v !== "form") setEditing(null); }} className="mt-8">

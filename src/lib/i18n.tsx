@@ -15,6 +15,12 @@ export const DATE_LOCALES: Record<Lang, Locale> = { fr, en: enUS, sw: enUS, es, 
 
 // French text → [en, sw, es, pt, ln]
 const D: Record<string, [string, string, string, string, string]> = {
+  "Menu": ["Menu", "Menyu", "Menú", "Menu", "Menyu"],
+  "Ouvrir le menu": ["Open menu", "Fungua menyu", "Abrir menú", "Abrir menu", "Fungola menyu"],
+  "Conversation WhatsApp": ["WhatsApp conversation", "Mazungumzo ya WhatsApp", "Conversación por WhatsApp", "Conversa no WhatsApp", "Lisolo na WhatsApp"],
+  "Conversation indisponible": ["Conversation unavailable", "Mazungumzo hayapatikani", "Conversación no disponible", "Conversa indisponível", "Lisolo ezali te"],
+  "Contact indisponible, réessayez.": ["Contact unavailable, please retry.", "Mawasiliano hayapatikani, jaribu tena.", "Contacto no disponible, inténtalo de nuevo.", "Contacto indisponível, tente novamente.", "Ekoki kosimba te, meka lisusu."],
+  "Chargement…": ["Loading…", "Inapakia…", "Cargando…", "A carregar…", "Ezali koya…"],
   "Accueil": ["Home", "Nyumbani", "Inicio", "Início", "Ebandeli"],
   "Catalogue": ["Catalogue", "Katalogi", "Catálogo", "Catálogo", "Katalógi"],
   "Langue": ["Language", "Lugha", "Idioma", "Idioma", "Monoko"],

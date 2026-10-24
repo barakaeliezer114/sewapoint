@@ -13,3 +13,4 @@
 - Listing media live in the private `media` bucket and are stored as long-lived signed URLs — workspace blocks public buckets.
 - Brand artwork lives as real image files in `src/assets` (emblem, full lockup, monogram background), imported directly; the header shows the emblem, the footer the current full lockup, and `public/favicon.png` is a square copy of the emblem — the site must stay self-hostable with no dependency on Lovable hosting.
 - Preserve persisted language storage keys and existing listing references during brand renames so returning visitors and historical orders retain continuity.
+- Keep public navigation, language selection, and the configured team WhatsApp contact in the shared header menu; never expose an admin entry there — consistent navigation without revealing administration.

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Check, ChevronRight, Home, Languages, LayoutGrid, Menu, MessageCircle, CircleHelp } from "lucide-react";
+import { Check, ChevronRight, Home, Languages, LayoutGrid, Menu, MessageCircle, Moon, Sun, CircleHelp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -14,6 +14,10 @@ import emblemAsset from "@/assets/sewapoint-emblem.png";
 export function SiteHeader() {
   const { t, lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(false);
+  useEffect(() => { setDark(localStorage.getItem("inkinet-theme") === "dark"); }, []);
+  useEffect(() => { document.documentElement.classList.toggle("dark", dark); }, [dark]);
+  const setTheme = (d: boolean) => { setDark(d); localStorage.setItem("inkinet-theme", d ? "dark" : "light"); };
   const { data: settings, isPending, isError } = useQuery({ ...settingsQuery(), enabled: open });
   const phone = settings?.whatsapp?.replace(/\D/g, "");
   const conversationUrl = phone ? `https://wa.me/${phone}?text=${encodeURIComponent("Bonjour Inkinet 👋, je souhaite avoir des renseignements sur vos services.")}` : undefined;
@@ -70,6 +74,16 @@ export function SiteHeader() {
               )}
               {isError && <p role="status" className="mt-2 text-sm text-muted-foreground">{t("Contact indisponible, réessayez.")}</p>}
             </div>
+            <fieldset className="border-b py-5">
+              <legend className="flex items-center gap-2 text-sm font-semibold">{dark ? <Moon className="h-4 w-4" aria-hidden="true" /> : <Sun className="h-4 w-4" aria-hidden="true" />}{t("Apparence")}</legend>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {([false, true] as const).map((d) => (
+                  <Button key={String(d)} variant={dark === d ? "secondary" : "outline"} aria-pressed={dark === d} onClick={() => setTheme(d)} className="h-11 justify-between px-3">
+                    <span className="flex items-center gap-2">{d ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}{t(d ? "Sombre" : "Clair")}</span>{dark === d && <Check aria-hidden="true" />}
+                  </Button>
+                ))}
+              </div>
+            </fieldset>
             <fieldset className="py-5">
               <legend className="flex items-center gap-2 text-sm font-semibold"><Languages className="h-4 w-4" aria-hidden="true" />{t("Langue")}</legend>
               <div className="mt-3 grid grid-cols-2 gap-2">

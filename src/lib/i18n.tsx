@@ -23,6 +23,9 @@ const D: Record<string, [string, string, string, string, string]> = {
   "Chargement…": ["Loading…", "Inapakia…", "Cargando…", "A carregar…", "Ezali koya…"],
   "Accueil": ["Home", "Nyumbani", "Inicio", "Início", "Ebandeli"],
   "Catalogue": ["Catalogue", "Katalogi", "Catálogo", "Catálogo", "Katalógi"],
+  "Apparence": ["Appearance", "Mwonekano", "Apariencia", "Aparência", "Ndenge ya komona"],
+  "Clair": ["Light", "Mwanga", "Claro", "Claro", "Pole"],
+  "Sombre": ["Dark", "Giza", "Oscuro", "Escuro", "Molili"],
   "Langue": ["Language", "Lugha", "Idioma", "Idioma", "Monoko"],
   "Votre intermédiaire unique pour l'immobilier, les séjours, les événements, le logement étudiant, l'informatique, la mode et les équipements.": [
     "Your single intermediary for real estate, stays, events, student housing, computers, fashion and equipment.",

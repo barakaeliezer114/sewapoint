@@ -64,6 +64,25 @@
   --ring: #1EA1F3;
 }
 
+.dark {
+  --background: #050D22;
+  --foreground: #E8F0FB;
+  --card: #0A1735;
+  --card-foreground: #E8F0FB;
+  --popover: #0A1735;
+  --popover-foreground: #E8F0FB;
+  --primary: #4FB4F6;
+  --primary-foreground: #04102A;
+  --secondary: #13254A;
+  --secondary-foreground: #E8F0FB;
+  --muted: #10203F;
+  --muted-foreground: #9DB0CC;
+  --accent: #1EA1F3;
+  --border: #1D3360;
+  --input: #1D3360;
+}
+.dark .sp-bg-spin { filter: invert(1); mix-blend-mode: screen; }
+
 @layer base {
   * { border-color: var(--color-border); }
   body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); }
